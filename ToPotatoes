@@ -1,0 +1,73 @@
+package PotatoePicker;
+
+import org.powerbot.core.script.job.state.Node;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.node.SceneEntities;
+import org.powerbot.game.api.methods.tab.Inventory;
+import org.powerbot.game.api.wrappers.Area;
+import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.map.TilePath;
+import org.powerbot.game.api.wrappers.node.SceneObject;
+
+import Util.Vars;
+
+public class ToPotatoes extends Node {
+  /*
+	private final static Tile[] TO_POTATOES = new Tile[] {
+			new Tile(3103, 3251, 0), new Tile(3115, 3262, 0),new Tile(3121,3262,0),
+			new Tile(3132, 3267, 0), new Tile(3132, 3289, 0),
+			new Tile(3143, 3294, 0) };
+	
+	// I like to declare stuff like this globally instead of creating it everytile in a method like you do below
+	public static final TilePath TO_POTATOES_PATH = new TilePath(TO_POTATOES);
+	*/
+	
+	public static final Tile[] TO_POTATOES_TILES = { new Tile(3092, 3245, 0), new Tile(3094, 3248, 0), new Tile(3100, 3249, 0), 
+		new Tile(3106, 3253, 0), new Tile(3113, 3257, 0), new Tile(3119, 3260, 0), 
+		new Tile(3127, 3262, 0), new Tile(3132, 3266, 0), new Tile(3134, 3272, 0), 
+		new Tile(3134, 3277, 0), new Tile(3134, 3284, 0), new Tile(3134, 3289, 0), 
+		new Tile(3139, 3293, 0), new Tile(3144, 3293, 0), new Tile(3145, 3293, 0) };	
+	
+	public static final TilePath TO_POTATOES_PATH = new TilePath(TO_POTATOES_TILES);
+	
+	// private final static Area Zone = new Area(new Tile[] { new Tile(3138,
+	// 3296, 0), new Tile(3149, 3296, 0), new Tile(3150, 3289, 0),
+	// new Tile(3137, 3289, 0) });
+
+	Area Banks = new Area(new Tile[] { new Tile(3088, 3248, 0),
+			new Tile(3095, 3246, 0), new Tile(3096, 3241, 0),
+			new Tile(3088, 3241, 0) });
+	
+	// your using the wrong area constructor
+	// many consructors have multiple ways of creating them so you got to make sure you are using the correct one
+	// this one is just a 2 input tile contruct SW NE tile
+	public static final Area InsidePotatoeZone = new Area(new Tile(3138, 3267, 0), new Tile(3159, 3291, 0));
+	public final static Tile[] Center_of_The_potatoes = {
+			new Tile(3144, 3290, 0), new Tile(3144, 3287, 0),
+			new Tile(3145, 3282, 0), new Tile(3146, 3279, 0) };
+	public static final TilePath TO_BANK_PATH = new TilePath(
+			Center_of_The_potatoes);
+	SceneObject Box = SceneEntities.getNearest(DepositBox);
+	public static final int DepositBox = 2045;
+	public static final int GateDoorOpened = 45207;
+	public static final int GateDoorClosed = 45206;
+	SceneObject GateDoorClose = SceneEntities.getNearest(45206);
+	SceneObject GateDoorOpen = SceneEntities.getNearest(45207);
+	SceneObject Potatoes = SceneEntities.getNearest(Vars.Potatoe_ID);
+	
+	@Override
+	public void execute() {
+		sleep(2000);// thats all you need lol since the only things we need to worry about walking to the potatoes is the gate which is now handled inside of the gate class
+		TO_POTATOES_PATH.traverse(); // Dont think you need close. as it'll activate the walk after inventory is empty. ya true i usually do it just as a safety thing
+		
+	}
+	
+	
+
+
+
+	@Override
+	public boolean activate() {
+		return !Inventory.isFull() && !InsidePotatoeZone.contains(Players.getLocal().getLocation());
+	}
+}
