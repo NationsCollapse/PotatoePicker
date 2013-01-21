@@ -1,0 +1,58 @@
+package PotatoePicker;
+
+import org.powerbot.core.script.job.Task;
+import org.powerbot.core.script.job.state.Node;
+import org.powerbot.game.api.methods.interactive.Players;
+import org.powerbot.game.api.methods.tab.Inventory;
+import org.powerbot.game.api.methods.widget.DepositBox;
+import org.powerbot.game.api.wrappers.Area;
+import org.powerbot.game.api.wrappers.Tile;
+import org.powerbot.game.api.wrappers.map.TilePath;
+
+public class FullInventory extends Node {
+
+  public final static Tile[] To_Bank = new Tile[] { new Tile(3134, 3285, 0), new Tile(3134, 3280, 0), new Tile(3133, 3271, 0), 
+		new Tile(3132, 3264, 0), new Tile(3124, 3264, 0), new Tile(3121, 3261, 0), 
+		new Tile(3111, 3260, 0), new Tile(3107, 3254, 0), new Tile(3105, 3250, 0), 
+		new Tile(3097, 3249, 0), new Tile(3092, 3245, 0) };
+	private static final TilePath TO_BANK_PATH = new TilePath(To_Bank);
+
+	public final static Tile[] TO_POTATOES = new Tile[] { new Tile(3091, 3245, 0), new Tile(3095, 3248, 0), new Tile(3100, 3247, 0), 
+		new Tile(3106, 3249, 0), new Tile(3110, 3252, 0), new Tile(3114, 3254, 0), 
+		new Tile(3120, 3257, 0), new Tile(3123, 3260, 0), new Tile(3127, 3263, 0), 
+		new Tile(3132, 3268, 0), new Tile(3133, 3274, 0), new Tile(3133, 3281, 0), 
+		new Tile(3134, 3284, 0), new Tile(3136, 3289, 0), new Tile(3143, 3293, 0) };
+
+	public static final Area InsidePotatoeZone =new Area(new Tile[] { new Tile(3134, 3293, 0), new Tile(3139, 3293, 0), new Tile(3144, 3292, 0), 
+			new Tile(3149, 3292, 0), new Tile(3154, 3293, 0), new Tile(3158, 3290, 0), 
+			new Tile(3157, 3285, 0), new Tile(3157, 3280, 0), new Tile(3158, 3275, 0), 
+			new Tile(3158, 3270, 0), new Tile(3154, 3267, 0), new Tile(3150, 3264, 0), 
+			new Tile(3145, 3263, 0), new Tile(3140, 3265, 0), new Tile(3137, 3269, 0), 
+			new Tile(3135, 3274, 0), new Tile(3133, 3279, 0), new Tile(3134, 3284, 0), 
+			new Tile(3135, 3289, 0) });
+	Area Banks = new Area(new Tile[] { new Tile(3088, 3248, 0), new Tile(3095, 3246, 0), new Tile(3096, 3241, 0), 
+			new Tile(3088, 3241, 0) });
+
+	@Override
+	public boolean activate() {		
+		return Inventory.isFull();
+	}
+
+	@Override
+	public void execute() {
+		if(Players.getLocal().isMoving()){
+			Task.sleep(300);
+		}
+		if(DepositBox.open()) { 
+			sleep(200);
+			DepositBox.depositInventory();
+
+		} else {
+			TO_BANK_PATH.traverse();
+			sleep(300);
+		}
+
+	}
+}
+
+
